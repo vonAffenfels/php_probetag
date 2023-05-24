@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+
+  start-loadbalancer:
+    image: docker
+    network_mode: "host"
+    restart: on-failure
+    command:
+      - sh
+      - /app/docker/traefik/traefik.sh
+    environment:
+      - DOCKER_HOST
+    volumes:
+      - ./:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /app
+
+  nginx:
+    image: nginx:stable
+    links:
+      - php-fpm
+    volumes:
+      - ./src:/var/www/html
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - traefik
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_NAME}-web.rule=Host(`${WORDPRESS_BLOGURL}`)"
+      - "traefik.http.routers.${TRAEFIK_NAME}-web.entrypoints=web"
+      - "traefik.http.services.${TRAEFIK_NAME}-web.loadbalancer.server.port=8080"
+      -  "traefik.tcp.routers.${TRAEFIK_NAME}-sni.rule=HostSNI(`${WORDPRESS_BLOGURL}`)"
+      - "traefik.tcp.routers.${TRAEFIK_NAME}-sni.tls.passthrough=true"
+      - "traefik.tcp.routers.${TRAEFIK_NAME}-sni.entrypoints=web-secure"
+      - "traefik.tcp.routers.${TRAEFIK_NAME}-sni.service=${TRAEFIK_NAME}-https-service"
+      - "traefik.tcp.services.${TRAEFIK_NAME}-https-service.loadbalancer.server.port=8443"
+
+  php-fpm:
+    image: vnrag/web-prokita
+    build:
+      context: .
+      target: php-fpm-dev
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    expose:
+      - 9000
+    links:
+      - mysql
+    volumes:
+      - ./src:/var/www/html
+      - ./.env:/var/www/html/.env
+      - ./docker/php/php-dev.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./docker/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+
+  # Configuration of mariadb 10
+  mysql:
+    image: mariadb:10.9.2
+    # name of the container
+    #container_name: wp-mysql57
+    command: --default-authentication-plugin=mysql_native_password
+    restart: "no"
+    volumes:
+     - ./docker/mysql/dump:/docker-entrypoint-initdb.d
+    env_file:
+      - ./docker/mysql/mysql.env
+    ports:
+      - "3308:3306"
+
+networks:
+  default:
+  traefik:
+    external: true

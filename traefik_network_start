@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ensure_traefik_network_exists() {
+  if ! (docker network ls | grep -q traefik) ; then
+    echo "Creating traefik docker network"
+    docker network create traefik
+  else
+    echo "Traefik network already exists"
+  fi
+}
+
+ensure_traefik_network_exists
