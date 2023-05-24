@@ -11,3 +11,6 @@
 * `cd src`
 * `composer update`
 * `npm run dev`
+
+#### Database Access
+`docker/mysql/mysql.env`
