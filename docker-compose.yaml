@@ -38,7 +38,7 @@ services:
       - "traefik.tcp.services.${TRAEFIK_NAME}-https-service.loadbalancer.server.port=8443"
 
   php-fpm:
-    image: vnrag/web-prokita
+    image: vaf/probearbeit
     build:
       context: .
       target: php-fpm-dev

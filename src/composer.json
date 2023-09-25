@@ -1,23 +1,16 @@
 {
-    "name": "vnrag/prokita",
+    "name": "vonaffenfels/probetag",
     "type": "project",
-    "description": "Prokita",
+    "description": "Probetag",
     "keywords": [
-        "prokita",
-        "pkp",
         "composer",
         "bedrock",
-        "wordpress",
-        "px"
+        "wordpress"
     ],
     "repositories": [
         {
             "type": "composer",
             "url": "https://wpackagist.org"
-        },
-        {
-            "type": "git",
-            "url": "git@github.com:vonAffenfels/vaf-wp-library.git"
         }
     ],
     "require": {
@@ -42,14 +35,17 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "platform":{
-            "php": "8.1.5",
-            "ext-imagick": "3.7.0"
+            "php": "8.1",
+            "ext-imagick": "3.7.0",
+            "ext-dom": "3.7.0",
+            "ext-xmlwriter": "3.6",
+            "ext-xml": "3.6",
+            "ext-simplexml": "3.6"
         },
         "allow-plugins": {
             "composer/installers": true,
             "composer/package-versions-deprecated": true,
             "roots/wordpress-core-installer": true,
-            "mindtwo/wplang": true,
             "php-http/discovery": true
         }
     },
