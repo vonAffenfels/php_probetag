@@ -28,10 +28,10 @@ services:
       - default
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.${TRAEFIK_NAME}-web.rule=Host(`${WORDPRESS_BLOGURL}`)"
+      - "traefik.http.routers.${TRAEFIK_NAME}-web.rule=Host(`${APP_URL}`)"
       - "traefik.http.routers.${TRAEFIK_NAME}-web.entrypoints=web"
       - "traefik.http.services.${TRAEFIK_NAME}-web.loadbalancer.server.port=8080"
-      -  "traefik.tcp.routers.${TRAEFIK_NAME}-sni.rule=HostSNI(`${WORDPRESS_BLOGURL}`)"
+      -  "traefik.tcp.routers.${TRAEFIK_NAME}-sni.rule=HostSNI(`${APP_URL}`)"
       - "traefik.tcp.routers.${TRAEFIK_NAME}-sni.tls.passthrough=true"
       - "traefik.tcp.routers.${TRAEFIK_NAME}-sni.entrypoints=web-secure"
       - "traefik.tcp.routers.${TRAEFIK_NAME}-sni.service=${TRAEFIK_NAME}-https-service"
