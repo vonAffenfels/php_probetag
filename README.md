@@ -3,14 +3,9 @@
 ### Dev Setup
 ####
 * `./traefik_network_start`
-* in ./src: `composer install`
 * `docker-compose -f docker-compose.yaml up`
-* http://probetag.localhost/wp/wp-admin/
+* http://probetag.localhost
 
-#### Build and update
-* `cd src`
-* `composer update`
-* `npm run dev`
 
 #### Database Access
 `docker/mysql/mysql.env`
