@@ -68,6 +68,23 @@ services:
     ports:
       - "3306:3306"
 
+  adminer:
+    image: adminer
+    environment:
+      ADMINER_DESIGN: 'pepa-linha'
+      ADMINER_DEFAULT_SERVER: 'mysql'
+    links:
+      - mysql
+    networks:
+      - traefik
+      - default
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.${TRAEFIK_NAME}-adminer.rule=Host(`adminer.${APP_URL}`)"
+      - "traefik.http.routers.${TRAEFIK_NAME}-adminer.entrypoints=web"
+      - "traefik.http.services.${TRAEFIK_NAME}-adminer.loadbalancer.server.port=80"
+
+
 networks:
   default:
   traefik:
