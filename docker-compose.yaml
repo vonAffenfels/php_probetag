@@ -82,7 +82,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.${TRAEFIK_NAME}-adminer.rule=Host(`adminer.${APP_URL}`)"
       - "traefik.http.routers.${TRAEFIK_NAME}-adminer.entrypoints=web"
-      - "traefik.http.services.${TRAEFIK_NAME}-adminer.loadbalancer.server.port=80"
+      - "traefik.http.services.${TRAEFIK_NAME}-adminer.loadbalancer.server.port=8080"
 
 
 networks:
